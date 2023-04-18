@@ -1,7 +1,7 @@
 import org.jenkinsci.plugins.pipeline.modeldefinition.Utils
 import groovy.lang.Binding
 import groovy.lang.GroovyShell
-import groovy.transfrom.Field
+import groovy.transform.Field
 
 def call(body){
     def config = [:]
