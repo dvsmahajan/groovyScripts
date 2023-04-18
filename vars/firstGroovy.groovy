@@ -32,7 +32,7 @@ def call(body){
             }
             stage("End"){
                 steps{
-                    println "$config"
+                    println "$config.name"
                 }
             }
         }
