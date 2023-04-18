@@ -17,19 +17,19 @@ def call(body){
                     config['stageName'] = "Running Stage"
                 }
             }
-            stage("${config['stageName']}"){
+            stage("Running"){
                 steps{
                     println "$config['stageName']"
                     config['stageName'] = "Pause"
                 }
             }
-            stage("${config['stageName']}"){
+            stage("Pause"){
                 steps{
                     println "$config['stageName']"
                     config['stageName'] = "End"
                 }
             }
-            stage("${config['stageName']}"){
+            stage("End"){
                 steps{
                     println "$config['stageName']"
                 }
