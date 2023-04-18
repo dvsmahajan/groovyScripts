@@ -15,19 +15,19 @@ def call(body){
             stage("Start"){
                 steps{
                     println "Staring Stage"
-                    all_params['stageName'] = "Running Stage"
+                    
                 }
             }
             stage("Running"){
                 steps{
                     println "$config"
-                    all_params['stageName'] = "Pause"
+                    
                 }
             }
             stage("Pause"){
                 steps{
                     println "$config"
-                    all_params['stageName'] = "End"
+                    
                 }
             }
             stage("End"){
