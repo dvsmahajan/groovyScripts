@@ -14,11 +14,24 @@ def call(body){
             stage("Start"){
                 steps{
                     println "Staring Stage"
+                    config.stageName = "Running Stage"
                 }
             }
-            stage("End"){
+            stage("${config.stageName}"){
                 steps{
-                    println "Ending Stage"
+                    println "$config.stageName"
+                    config.stageName = "Pause"
+                }
+            }
+            stage("${config.stageName}"){
+                steps{
+                    println "$config.stageName"
+                    config.stageName = "End"
+                }
+            }
+            stage("${config.stageName}"){
+                steps{
+                    println "$config.stageName"
                 }
             }
         }
