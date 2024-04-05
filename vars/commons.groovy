@@ -31,7 +31,7 @@ def call(body) {
             stage("End") {
                 steps {
                     echo "$config.name"
-                    config.name = "Done"
+                    // config.name = "Done"
                     echo "$config.name"
                 }
             }
