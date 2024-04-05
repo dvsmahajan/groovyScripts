@@ -3,7 +3,7 @@ import groovy.lang.Binding
 import groovy.lang.GroovyShell
 import groovy.transform.Field
 
-def call(body) {
+def call(Closure body) {
     def config = [:] // Initialize an empty map
 
     body.resolveStrategy = Closure.DELEGATE_FIRST
