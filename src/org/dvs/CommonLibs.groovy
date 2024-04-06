@@ -15,7 +15,7 @@ def execute(config){
 //                """
 //        }
         stage('validate server'){
-            withCredentials([string(credentialsId: 'masterID', variable: 'PASSWORD')]) {
+            withCredentials([usernameColonPassword(credentialsId: 'masterID', variable: 'USERPASS')]) {
                 ssh """
                     echo "I am trying to connect the server"
                     ssh user@192.168.0.102 "pwd;ls -a;" 
