@@ -9,38 +9,39 @@ def call(body) {
     body.delegate = config
     body()
     def all_params = [:]
-    try {
-        stages{
-            stage("Start"){
-                steps{
-                    println "Staring Stage"
+    node(){
+        try {
+            stages{
+                stage("Start"){
+                    steps{
+                        println "Staring Stage"
 
+                    }
                 }
-            }
-            stage("Running"){
-                steps{
-                    println "$config"
+                stage("Running"){
+                    steps{
+                        println "$config"
 
+                    }
                 }
-            }
-            stage("Pause"){
-                steps{
-                    println "$config"
+                stage("Pause"){
+                    steps{
+                        println "$config"
 //                    commonLib = new common-libs();
-                    common-libs.pipelineJob(config)
+                        common-libs.pipelineJob(config)
+                    }
                 }
-            }
-            stage("End"){
-                steps{
-                    println "$config.name"
-                    // config.name = "Done"
-                    println "$config.name"
+                stage("End"){
+                    steps{
+                        println "$config.name"
+                        // config.name = "Done"
+                        println "$config.name"
+                    }
                 }
-            }
 
+            }
+        }catch (err){
+            print("Exception occur "+err)
         }
-    }catch (err){
-        print("Exception occur "+err)
     }
-
 }
