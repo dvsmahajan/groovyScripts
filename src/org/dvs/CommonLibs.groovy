@@ -6,4 +6,14 @@ def pipelineJob(config){
 
 def execute(config){
     print(config)
+    try {
+        stage("build"){
+            sh """
+                    pwd;
+                    ls -a;
+                """
+        }
+    }catch (err){
+        printf(err)
+    }
 }

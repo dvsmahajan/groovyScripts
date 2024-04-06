@@ -12,13 +12,14 @@ def call(body) {
     node(){
         try {
             def commonLibs = new org.dvs.CommonLibs();
+            commonLibs.execute(config)
                 stage("Start"){
                         println "Staring Stage"
                         commonLibs.pipelineJob();
                 }
                 stage("Running"){
                         println "Calling Executing"
-                        commonLibs.execute(config)
+
 
                 }
                 stage("Pause"){
