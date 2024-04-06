@@ -11,7 +11,6 @@ def call(body) {
     def all_params = [:]
     node(){
         try {
-            stages{
                 stage("Start"){
                     steps{
                         println "Staring Stage"
@@ -39,7 +38,6 @@ def call(body) {
                     }
                 }
 
-            }
         }catch (err){
             print("Exception occur "+err)
         }
