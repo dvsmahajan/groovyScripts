@@ -12,30 +12,22 @@ def call(body) {
     node(){
         try {
                 stage("Start"){
-                    steps{
                         println "Staring Stage"
 
-                    }
                 }
                 stage("Running"){
-                    steps{
                         println "$config"
 
-                    }
                 }
                 stage("Pause"){
-                    steps{
                         println "$config"
 //                    commonLib = new common-libs();
                         common-libs.pipelineJob(config)
-                    }
                 }
                 stage("End"){
-                    steps{
                         println "$config.name"
                         // config.name = "Done"
                         println "$config.name"
-                    }
                 }
 
         }catch (err){
