@@ -18,7 +18,7 @@ def execute(config){
             withCredentials([usernameColonPassword(credentialsId: 'masterID', variable: 'USERPASS')]) {
                 sh """
                     echo "I am trying to connect the server"
-                    ssh user@192.168.0.102 "pwd;ls -a;" 
+                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 "pwd;ls -a;" 
                     """
             }
         }
