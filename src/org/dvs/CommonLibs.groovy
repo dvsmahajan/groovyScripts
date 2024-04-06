@@ -11,6 +11,7 @@ def execute(config){
             sh """
                     pwd;
                     ls -a;
+                    mvn clean install;
                 """
         }
     }catch (err){
