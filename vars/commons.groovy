@@ -12,35 +12,32 @@ def call(body) {
     pipeline{
         agent any
         stages{
-            try {
-                stage("Start"){
-                    steps{
-                        println "Staring Stage"
+            stage("Start"){
+                steps{
+                    println "Staring Stage"
 
-                    }
                 }
-                stage("Running"){
-                    steps{
-                        println "$config"
-
-                    }
-                }
-                stage("Pause"){
-                    steps{
-                        println "$config"
-
-                    }
-                }
-                stage("End"){
-                    steps{
-                        println "$config.name"
-                        // config.name = "Done"
-                        println "$config.name"
-                    }
-                }
-            }catch (e){
-                print("Exception occure while running pipeline ",e)
             }
+            stage("Running"){
+                steps{
+                    println "$config"
+
+                }
+            }
+            stage("Pause"){
+                steps{
+                    println "$config"
+                    common-libs.pipelineJob(config)
+                }
+            }
+            stage("End"){
+                steps{
+                    println "$config.name"
+                    // config.name = "Done"
+                    println "$config.name"
+                }
+            }
+
         }
     }
 }
