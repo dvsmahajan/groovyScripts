@@ -17,7 +17,8 @@ def call(body) {
                         commonLibs.pipelineJob();
                 }
                 stage("Running"){
-                        println "$config"
+                        println "Calling Executing"
+                        commonLibs.execute(config)
 
                 }
                 stage("Pause"){
