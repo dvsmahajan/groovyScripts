@@ -11,9 +11,10 @@ def call(body) {
     def all_params = [:]
     node(){
         try {
+            def commonLibs = new org.dvs.CommonLibs();
                 stage("Start"){
                         println "Staring Stage"
-
+                        commonLibs.pipelineJob();
                 }
                 stage("Running"){
                         println "$config"
