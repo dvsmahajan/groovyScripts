@@ -15,10 +15,10 @@ def execute(config){
 //                """
 //        }
         stage('validate server'){
-            withCredentials([usernameColonPassword(credentialsId: 'masterID', variable: 'USERPASS')]) {
+            withCredentials([sshUserPrivateKey(credentialsId: 'masterID', keyFileVariable: 'SSH_KEY')]) {
                 sh """
                     echo "I am trying to connect the server"
-                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 "pwd;ls -a;" 
+                    ssh  -i "$SSH_KEY"  -o StrictHostKeyChecking=no user@192.168.0.102 "pwd;ls -a;" 
                     """
             }
         }
