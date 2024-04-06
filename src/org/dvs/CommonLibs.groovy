@@ -24,5 +24,6 @@ def execute(config){
         }
     }catch (err){
         print(err)
+        return "";
     }
 }
