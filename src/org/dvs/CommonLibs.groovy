@@ -19,7 +19,7 @@ def execute(config){
 
                 sh """
                     echo "I am trying to connect the server"
-                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 "pwd;ls -a;" 
+                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 "rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app;" 
                     """
             }
         }
