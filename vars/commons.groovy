@@ -22,7 +22,7 @@ def call(body) {
                 stage("Pause"){
                         println "$config"
 //                    commonLib = new common-libs();
-                        common-libs.pipelineJob(config)
+//                        common-libs.pipelineJob(config)
                 }
                 stage("End"){
                         println "$config.name"
