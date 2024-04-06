@@ -9,8 +9,7 @@ def call(body) {
     body.delegate = config
     body()
     def all_params = [:]
-    pipeline{
-        agent any
+    try {
         stages{
             stage("Start"){
                 steps{
@@ -27,6 +26,7 @@ def call(body) {
             stage("Pause"){
                 steps{
                     println "$config"
+//                    commonLib = new common-libs();
                     common-libs.pipelineJob(config)
                 }
             }
@@ -39,5 +39,8 @@ def call(body) {
             }
 
         }
+    }catch (err){
+        print("Exception occur "+err)
     }
+
 }
