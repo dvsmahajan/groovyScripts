@@ -23,6 +23,6 @@ def execute(config){
             }
         }
     }catch (err){
-        printf(err)
+        print(err)
     }
 }
