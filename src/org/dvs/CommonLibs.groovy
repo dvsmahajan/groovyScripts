@@ -15,7 +15,8 @@ def execute(config){
 //                """
 //        }
         stage('validate server'){
-            withCredentials([sshUserPrivateKey(credentialsId: 'masterSSHID', keyFileVariable: 'SSH_KEY')]) {
+            sshagent(['masterSSHID']){
+
                 sh """
                     echo "I am trying to connect the server"
                     ssh  -i "$SSH_KEY"  -o StrictHostKeyChecking=no user@192.168.0.102 "pwd;ls -a;" 
