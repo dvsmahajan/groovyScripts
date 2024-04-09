@@ -35,7 +35,7 @@ def execute(config){
                 print("Deploying the deployement yaml in server")
 
                 if(isDeployment){
-                    sh """sshpass -p "user" scp -o PreferredAuthentications="password" doployment.yaml  target/eureka-1.war user@192.168.0.102:/home/user/app/;"""
+                    sh """sshpass -p "user" scp -o PreferredAuthentications="password" doployment.yaml  user@192.168.0.102:/home/user/app/;"""
                 }
 
                 print("Deploying the Service yaml in server")
