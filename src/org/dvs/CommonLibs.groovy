@@ -25,10 +25,8 @@ def execute(config){
                 }
             }
             stage('Clone Repo') {
-                steps {
-                    script {
-                        sh 'cd $WORKSPACE; git clone https://github.com/dvsmahajan/micro-eureka.git ; cd micro-eureka;'
-                    }
+                script {
+                    sh 'cd $WORKSPACE; git clone https://github.com/dvsmahajan/micro-eureka.git ; cd micro-eureka;'
                 }
             }
             stage('Build'){
