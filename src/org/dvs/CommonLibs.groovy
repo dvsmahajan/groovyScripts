@@ -21,15 +21,16 @@ def execute(config){
                     sh """
                     echo "I am trying to connect the server"
                     ssh  -o StrictHostKeyChecking=no user@192.168.0.102 "rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a" 
+                     ssh  -o StrictHostKeyChecking=no user@192.168.0.101 "echo 'I am inside 101' ;rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a" 
                     """
                 }
-                sshagent(['slaveSSHID']){
-
-                    sh """
-                    echo "I am trying to connect the server"
-                    ssh  -o StrictHostKeyChecking=no user@192.168.0.101 "echo 'I am inside 101' ;rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a" 
-                    """
-                }
+//                sshagent(['slaveSSHID']){
+//
+//                    sh """
+//                    echo "I am trying to connect the server"
+//                    ssh  -o StrictHostKeyChecking=no user@192.168.0.101 "echo 'I am inside 101' ;rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a"
+//                    """
+//                }
 
             }
             stage('Clone Repo') {
