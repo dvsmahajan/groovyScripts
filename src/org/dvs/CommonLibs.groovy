@@ -69,6 +69,29 @@ def execute(config){
                 }
             }
 
+            if(isDeployment){
+                stage(Deployement){
+                    sshagent(['masterSSHID']){
+
+                        sh """
+                        echo "I am trying to connect the server"
+                        ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " cd /home/user/app; kubectl apply -f deployment.yaml " 
+                        """
+                    }
+                }
+            }
+
+            if(isDeployment){
+                stage(Deployement){
+                    sshagent(['masterSSHID']){
+
+                        sh """
+                        echo "I am trying to connect the server"
+                        ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " cd /home/user/app; kubectl apply -f service.yaml " 
+                        """
+                    }
+                }
+            }
             stage("Image Status"){
                 sshagent(['masterSSHID']){
 
