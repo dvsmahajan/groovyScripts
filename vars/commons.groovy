@@ -13,25 +13,6 @@ def call(body) {
         try {
             def commonLibs = new org.dvs.CommonLibs();
             commonLibs.execute(config)
-                stage("Start"){
-                        println "Staring Stage"
-                        commonLibs.pipelineJob();
-                }
-                stage("Running"){
-                        println "Calling Executing"
-
-
-                }
-                stage("Pause"){
-                        println "$config"
-//                    commonLib = new common-libs();
-//                        common-libs.pipelineJob(config)
-                }
-                stage("End"){
-                        println "$config.name"
-                        // config.name = "Done"
-                        println "$config.name"
-                }
 
         }catch (err){
             print("Exception occur "+err)
