@@ -21,6 +21,7 @@ def execute(config){
                     sh """
                     echo "I am trying to connect the server"
                     ssh  -o StrictHostKeyChecking=no user@192.168.0.102 "rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a" 
+                    ssh  -o StrictHostKeyChecking=no user@192.168.0.101 "echo 'I am in slave vm' ;rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a" 
                     """
                 }
             }
@@ -38,10 +39,10 @@ def execute(config){
 
                 print("Deploying the application in server")
 
-                sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/target/eureka-1.war user@192.168.0.102:/home/user/app/; """
+                sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/target/eureka-1.war user@192.168.0.101:/home/user/app/; """
 
                 if(isDocker){
-                    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/Dockerfile user@192.168.0.102:/home/user/app/; """
+                    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/Dockerfile user@192.168.0.101:/home/user/app/; """
                 }
 
                 print("Deploying the deployement yaml in server")
@@ -64,7 +65,7 @@ def execute(config){
 
                     sh """
                     echo "I am trying to connect the server"
-                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " cd /home/user/app; echo 'Trying to create docker image'; docker build -t eureka . " 
+                    ssh  -o StrictHostKeyChecking=no user@192.168.0.101 " cd /home/user/app; echo 'Trying to create docker image'; docker build -t eureka . " 
                     """
                 }
             }
