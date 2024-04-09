@@ -52,6 +52,7 @@ def execute(config){
 
                 if(isDocker){
                     sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/Dockerfile user@192.168.0.101:/home/user/app/; """
+                    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/Dockerfile user@192.168.0.102:/home/user/app/; """
                 }
 
                 print("Deploying the deployement yaml in server")
