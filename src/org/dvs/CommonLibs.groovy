@@ -23,6 +23,7 @@ def execute(config){
                 }
             }
             stage('Build'){
+                sh "pwd; ls -a"
                 sh "mvn clean install"
             }
 
