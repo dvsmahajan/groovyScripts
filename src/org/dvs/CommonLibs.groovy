@@ -14,7 +14,8 @@ def execute(config){
 
         if(isDeploy){
             stage('Prepare'){
-                sh "pwd; ls -a"
+                sh " echo $WORKSPACE"
+                sh "pwd; ls -a;"
                 sshagent(['masterSSHID']){
 
                     sh """
