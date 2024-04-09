@@ -32,6 +32,10 @@ def execute(config){
 
                 sh """sshpass -p "user" scp -o PreferredAuthentications="password"  target/eureka-1.war user@192.168.0.102:/home/user/app/; """
 
+                if(isDocker){
+                    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  Dockerfile user@192.168.0.102:/home/user/app/; """
+                }
+
                 print("Deploying the deployement yaml in server")
 
                 if(isDeployment){
@@ -43,6 +47,27 @@ def execute(config){
                 if(isService){
                     sh """sshpass -p "user" scp -o PreferredAuthentications="password" service.yaml   user@192.168.0.102:/home/user/app/;"""
 
+                }
+            }
+        }
+        if(isDocker){
+            stage("Docker Image"){
+                sshagent(['masterSSHID']){
+
+                    sh """
+                    echo "I am trying to connect the server"
+                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " cd /home/user/app; echo 'Trying to create docker image'; docker build -t eureka . " 
+                    """
+                }
+            }
+
+            stage("Image Status"){
+                sshagent(['masterSSHID']){
+
+                    sh """
+                    echo "I am trying to connect the server"
+                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " docker images  " 
+                    """
                 }
             }
         }
