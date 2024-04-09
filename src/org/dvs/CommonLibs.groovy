@@ -70,7 +70,7 @@ def execute(config){
             }
 
             if(isDeployment){
-                stage(Deployement){
+                stage("Deployment"){
                     sshagent(['masterSSHID']){
 
                         sh """
@@ -81,8 +81,8 @@ def execute(config){
                 }
             }
 
-            if(isDeployment){
-                stage(Deployement){
+            if(isService){
+                stage("Service"){
                     sshagent(['masterSSHID']){
 
                         sh """
@@ -92,15 +92,7 @@ def execute(config){
                     }
                 }
             }
-            stage("Image Status"){
-                sshagent(['masterSSHID']){
 
-                    sh """
-                    echo "I am trying to connect the server"
-                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " docker images  " 
-                    """
-                }
-            }
         }
 
     }catch (err){
