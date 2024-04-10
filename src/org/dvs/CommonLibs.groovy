@@ -1,17 +1,18 @@
 package org.dvs;
 
-def pipelineJob(config){
-    echo "Hellp"
-}
 
 def execute(config){
     print(config)
     try {
+        appName= config['name'];
         isDeployment = config['deployment'];
         isService = config['service'];
         isDocker = config['docker'];
         isDeploy = config['deploy'];
-
+        repoUrl = config['repo'];
+        jarName = config['jarName'];
+        serverIp = "192.168.0.102"
+        deployIp = "192.168.0.101"
         if(isDeploy){
             stage('Prepare'){
                 sh " echo $WORKSPACE"
@@ -24,71 +25,47 @@ def execute(config){
                      ssh  -o StrictHostKeyChecking=no user@192.168.0.101 "echo 'I am inside 101' ;rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a" 
                     """
                 }
-//                sshagent(['slaveSSHID']){
-//
-//                    sh """
-//                    echo "I am trying to connect the server"
-//                    ssh  -o StrictHostKeyChecking=no user@192.168.0.101 "echo 'I am inside 101' ;rm -rf /home/user/app ; mkdir /home/user/app ; cd /home/user/app; pwd ; ls -a"
-//                    """
-//                }
-
             }
             stage('Clone Repo') {
-                script {
-                    sh 'cd $WORKSPACE; rm -rf micro-eureka; git clone https://github.com/dvsmahajan/micro-eureka.git ; cd micro-eureka;'
-                }
+                cloneRepo(appName,repoUrl);
             }
             stage('Build'){
-                sh "pwd; ls -a"
-                sh "cd $WORKSPACE; cd micro-eureka; mvn clean install"
+                buildMavenProject(appName)
             }
 
             stage('Deploy'){
-
                 print("Deploying the application in server")
-
-                sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/target/eureka-1.war user@192.168.0.101:/home/user/app/; """
-                sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/target/eureka-1.war user@192.168.0.102:/home/user/app/; """
+                copyJarToServer(appName,jarName)
 
                 if(isDocker){
-                    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/Dockerfile user@192.168.0.101:/home/user/app/; """
-                    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  micro-eureka/Dockerfile user@192.168.0.102:/home/user/app/; """
+                    path = "$appName/Dockerfile";
+                    destinationPath = "user@$deployIp:/home/user/app/;"
+                    copyFile(path, destinationPath);
                 }
-
-                print("Deploying the deployement yaml in server")
 
                 if(isDeployment){
-                    sh """sshpass -p "user" scp -o PreferredAuthentications="password" micro-eureka/deployment.yaml  user@192.168.0.102:/home/user/app/;"""
+                    path = "$appName/deployment.yaml";
+                    destinationPath = "user@$serverIp:/home/user/app/;"
+                    copyFile(path, destinationPath);
                 }
-
-                print("Deploying the Service yaml in server")
-
                 if(isService){
-                    sh """sshpass -p "user" scp -o PreferredAuthentications="password" micro-eureka/service.yaml   user@192.168.0.102:/home/user/app/;"""
-
+                    path = "$appName/service.yaml";
+                    destinationPath = "user@$serverIp:/home/user/app/;"
+                    copyFile(path, destinationPath);
                 }
             }
         }
         if(isDocker){
             stage("Docker Image"){
                 sshagent(['masterSSHID']){
-
-                    sh """
-                    echo "I am trying to connect the server"
-                    ssh  -o StrictHostKeyChecking=no user@192.168.0.101 " cd /home/user/app; echo 'Trying to create docker image'; docker build -t eureka . " 
-                    ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " cd /home/user/app; echo 'Trying to create docker image'; docker build -t eureka . " 
-                    """
+                    buildDockerImage(jarName,deployIp)
                 }
             }
 
             if(isDeployment){
                 stage("Deployment"){
                     sshagent(['masterSSHID']){
-
-                        sh """
-                        echo "I am trying to connect the server"
-                        ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " cd /home/user/app; kubectl apply -f deployment.yaml " 
-                        """
+                        applyKubernates(serverIp, "deployment.yaml")
                     }
                 }
             }
@@ -96,11 +73,7 @@ def execute(config){
             if(isService){
                 stage("Service"){
                     sshagent(['masterSSHID']){
-
-                        sh """
-                        echo "I am trying to connect the server"
-                        ssh  -o StrictHostKeyChecking=no user@192.168.0.102 " cd /home/user/app; kubectl apply -f service.yaml " 
-                        """
+                        applyKubernates(serverIp, "service.yaml")
                     }
                 }
             }
@@ -111,4 +84,36 @@ def execute(config){
         print(err)
         throw err;
     }
+}
+
+buildMavenProject(appName){
+    sh "pwd; ls -a"
+    sh "cd $WORKSPACE; cd $appName; mvn clean install"
+}
+
+cloneRepo(appName,repoUrl){
+    script {
+        sh 'cd $WORKSPACE; rm -rf $appName; git clone $repoUrl ; cd $appName;'
+    }
+}
+
+copyJarToServer(appName,jarName){
+    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $appName/target/$jarName-1.war user@192.168.0.102:/home/user/app/; """
+}
+
+copyFile(path, destinationPath){
+    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $path $destinationPath """
+}
+
+buildDockerImage(jarName, deployIp){
+    sh """
+    echo "I am trying to connect the server"
+    ssh  -o StrictHostKeyChecking=no user@$deployIp " cd /home/user/app; echo 'Trying to create docker image'; docker build -t $jarName . ; docker image tag $jarName  localhost:5000/$jarName; docker push localhost:5000/eureka" 
+    """
+}
+
+applyKubernates(serverIp, file){
+    sh """
+        ssh  -o StrictHostKeyChecking=no user@$serverIp " cd /home/user/app; kubectl apply -f $file" 
+    """
 }
