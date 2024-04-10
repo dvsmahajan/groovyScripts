@@ -110,7 +110,7 @@ def copyFile(path, destinationPath){
 def buildDockerImage(jarName, deployIp){
     sh """
     echo "I am trying to connect the server"
-    ssh  -o StrictHostKeyChecking=no user@$deployIp " cd /home/user/app; echo 'Trying to create docker image'; docker build -t $jarName . ; docker image tag $jarName  localhost:5000/$jarName; docker push localhost:5000/eureka" 
+    ssh  -o StrictHostKeyChecking=no user@$deployIp " cd /home/user/app; echo 'Trying to create docker image'; docker build -t $jarName . ; docker image tag $jarName  localhost:5000/$jarName; docker push localhost:5000/$jarName" 
     """
 }
 
