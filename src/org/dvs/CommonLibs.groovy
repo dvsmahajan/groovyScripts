@@ -38,18 +38,18 @@ def execute(config){
                 copyJarToServer(appName,jarName)
 
                 if(isDocker){
-                    path = "$appName/Dockerfile";
+                    path = "$WORKSPACE/$appName/Dockerfile";
                     destinationPath = "user@$deployIp:/home/user/app/;"
                     copyFile(path, destinationPath);
                 }
 
                 if(isDeployment){
-                    path = "$appName/deployment.yaml";
+                    path = "$WORKSPACE/$appName/deployment.yaml";
                     destinationPath = "user@$serverIp:/home/user/app/;"
                     copyFile(path, destinationPath);
                 }
                 if(isService){
-                    path = "$appName/service.yaml";
+                    path = "$WORKSPACE/$appName/service.yaml";
                     destinationPath = "user@$serverIp:/home/user/app/;"
                     copyFile(path, destinationPath);
                 }
@@ -99,7 +99,7 @@ def cloneRepo(appName,repoUrl){
 }
 
 def copyJarToServer(appName,jarName){
-    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $appName/target/$jarName-1.war user@192.168.0.102:/home/user/app/; """
+    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $WORKSPACE/$appName/target/$jarName-1.war user@192.168.0.102:/home/user/app/; """
 }
 
 def copyFile(path, destinationPath){
