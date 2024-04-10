@@ -13,6 +13,7 @@ def execute(config){
         jarName = config['jarName'];
         serverIp = "192.168.0.102"
         deployIp = "192.168.0.101"
+        archiveType = config['archiveType']
         if(isDeploy){
             stage('Prepare'){
                 sh " echo $WORKSPACE"
@@ -35,7 +36,7 @@ def execute(config){
 
             stage('Deploy'){
                 print("Deploying the application in server")
-                copyJarToServer(appName,jarName)
+                copyJarToServer(appName,jarName,archiveType)
 
                 if(isDocker){
                     path = "$WORKSPACE/$appName/Dockerfile";
@@ -98,8 +99,8 @@ def cloneRepo(appName,repoUrl){
     }
 }
 
-def copyJarToServer(appName,jarName){
-    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $WORKSPACE/$appName/target/$jarName-1.war user@192.168.0.102:/home/user/app/; """
+def copyJarToServer(appName,jarName,archiveType){
+    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $WORKSPACE/$appName/target/$jarName-1.$archiveType user@192.168.0.102:/home/user/app/; """
 }
 
 def copyFile(path, destinationPath){
