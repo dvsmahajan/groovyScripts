@@ -100,7 +100,7 @@ def cloneRepo(appName,repoUrl){
 }
 
 def copyJarToServer(appName,jarName,archiveType){
-    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $WORKSPACE/$appName/target/$jarName-1.$archiveType user@192.168.0.102:/home/user/app/; """
+    sh """sshpass -p "user" scp -o PreferredAuthentications="password"  $WORKSPACE/$appName/target/$jarName-1.$archiveType user@192.168.0.101:/home/user/app/; """
 }
 
 def copyFile(path, destinationPath){
