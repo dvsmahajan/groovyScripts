@@ -92,8 +92,9 @@ def buildMavenProject(appName){
 }
 
 def cloneRepo(appName,repoUrl){
+    print("APP NAME :: $appName, REPO URL:: $repoUrl")
     script {
-        sh 'cd $WORKSPACE; rm -rf $appName; git clone $repoUrl ; cd $appName;'
+        sh "cd $WORKSPACE; rm -rf $appName; git clone $repoUrl ; cd $appName;"
     }
 }
 
